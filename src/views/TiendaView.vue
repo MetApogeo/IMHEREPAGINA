@@ -6,6 +6,7 @@ import { ref, onMounted } from 'vue';
 
 const listaProductos = ref([]);
 const productoSeleccionado = ref([]);
+const productoAgregado = ref(false);
 
 
 // Función asincrónica para obtener la lista de productos desde la API
@@ -29,6 +30,7 @@ const agregarCarrito = (id) => {
     carrito.push(id); // Agrega el ID del producto al carrito
     localStorage.setItem('carrito', JSON.stringify(carrito)); // Guarda el carrito actualizado en el almacenamiento local
     console.log('carrito actualizado');
+    productoAgregado.value = true;
   } catch (error) {
     console.error('Error al agregar producto al carrito:', error);
     // Aquí podrías manejar el error de manera adecuada, por ejemplo, mostrando un mensaje al usuario
@@ -67,7 +69,7 @@ onMounted(() => {
 <div class="container text-center">
     <div class="row row-cols-1 row-cols-md-3 g-4">
       <div v-for="(producto, index) in listaProductos" :key="index" class="col">
-        <div class="card h-100 hover-effect" @click="mostrarDetalles(producto)" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        <div class="card h-100 hover-effect producto" style="position: relative;" @click="mostrarDetalles(producto)" data-bs-toggle="modal" data-bs-target="#exampleModal">
           <!-- Utiliza la imagen del producto si está disponible, de lo contrario, muestra una imagen predeterminada -->
           <img v-if="producto.imagen" :src="producto.imagen" class="card-img-top imgProduct" :alt="producto.nombre">
           <img v-else src="../assets/IMG/oso.png" class="card-img-top imgProduct" :alt="producto.nombre">
@@ -88,10 +90,10 @@ onMounted(() => {
     <div class="modal-content bg-dark text-white">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">{{ productoSeleccionado.nombre }}</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="background-color: #6c757d; border-color: #6c757d;"></button>
       </div>
       <div class="modal-body">
-        <div class="row">
+        <div class="row" :class="{ 'producto-agregado' : productoAgregado}">
           <div class="col-md-6">
             <img v-if="productoSeleccionado.imagen" :src="productoSeleccionado.imagen" class="img-fluid" :alt="productoSeleccionado.nombre">
             <img v-else src="../assets/IMG/oso.png" class="img-fluid" :alt="productoSeleccionado.nombre">
@@ -99,7 +101,6 @@ onMounted(() => {
           <div class="col-md-6">
             <p>{{ productoSeleccionado.descripcion }}</p>
             <p>Precio: $ {{ productoSeleccionado.precio }}</p>
-            <button type="button" class="btn btn-primary" @click="agregarCarrito(productoSeleccionado.id)">Agregar al carrito</button>
           </div>
         </div>
       </div>
@@ -281,4 +282,20 @@ body{
 .modal-custom {
   max-width: 80%; /* Cambia el valor según lo ancho que desees el modal */
 }
+
+.producto-agregado {
+  animation: productoAgregadoAnimacion 1s ease;
+}
+
+@keyframes productoAgregadoAnimacion {
+  0% {
+    transform: translateY(-20px); /* Mueve el producto hacia arriba */
+    opacity: 0; /* Hace que el producto sea transparente */
+  }
+  100% {
+    transform: translateY(0); /* Restaura la posición original */
+    opacity: 1; /* Restaura la opacidad original */
+  }
+}
+
 </style>
