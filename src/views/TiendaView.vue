@@ -1,12 +1,14 @@
 <script setup>
 import axios from 'axios';
 import { ref, onMounted } from 'vue';
+import { watch } from 'vue';
 
 // Variable reactiva para almacenar la lista de productos
 
 const listaProductos = ref([]);
 const productoSeleccionado = ref([]);
 const productoAgregado = ref(false);
+const listaCarrito = ref([]);
 
 
 // Función asincrónica para obtener la lista de productos desde la API
@@ -24,13 +26,23 @@ const obtenerProductos = async () => {
   }
 }; 
 
+
+
 const agregarCarrito = (id) => {
   try {
     let carrito = JSON.parse(localStorage.getItem('carrito')) || []; // Obtiene el carrito o inicializa como un array vacío
-    carrito.push(id); // Agrega el ID del producto al carrito
-    localStorage.setItem('carrito', JSON.stringify(carrito)); // Guarda el carrito actualizado en el almacenamiento local
-    console.log('carrito actualizado');
-    productoAgregado.value = true;
+    if (!carrito.includes(id)) {
+      carrito.push(id); // Agrega el ID del producto al carrito
+      localStorage.setItem('carrito', JSON.stringify(carrito)); // Guarda el carrito actualizado en el almacenamiento local
+      console.log('Producto agregado al carrito'); 
+
+      // Establecer la variable productoAgregado en true y luego volver a false después de 3 segundos
+      productoAgregado.value = true;
+      console.log('El producto ha sido agregado al carrito');
+    } else {
+      console.log('El producto ya está en el carrito');
+      // Aquí podrías mostrar un mensaje al usuario indicando que el producto ya está en el carrito
+    }
   } catch (error) {
     console.error('Error al agregar producto al carrito:', error);
     // Aquí podrías manejar el error de manera adecuada, por ejemplo, mostrando un mensaje al usuario
@@ -48,6 +60,7 @@ const mostrarDetalles = (producto => {
 onMounted(() => {
   obtenerProductos();
 });
+
 
 
 </script>
@@ -106,7 +119,13 @@ onMounted(() => {
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-        <button type="button" class="btn btn-primary" @click="agregarCarrito(productoSeleccionado.id)">Agregar al carrito</button>
+        <button type="button" class="btn btn-primary" @click="agregarCarrito(productoSeleccionado.id)" :disabled="productoAgregado">
+          {{ productoAgregado ? 'Producto Agregado' : 'Agregar al carrito' }}
+        </button>
+
+        <div v-if="productoAgregado" class="alert alert-success" role="alert">
+          El producto ha sido agregado al carrito.
+        </div>
       </div>
     </div>
   </div>
