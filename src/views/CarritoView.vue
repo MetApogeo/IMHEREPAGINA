@@ -114,7 +114,6 @@ watch(listaCarrito, () => {
           <button @click="comprar" class="btn btn-primary">Comprar</button>
         </div>
       </div>
-
     </div>
 
 </body>
