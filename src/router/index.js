@@ -75,6 +75,11 @@ const router = createRouter({
         name: 'listadoproductos',
         component: () => import('../views/administracion/productos/ListadoView.vue')
       },
+      {
+        path: '/admin/productos/agregar',
+        name: 'agregarproducto',
+        component: () => import('../views/administracion/productos/AgregarView.vue')
+      },
 
   ]
 })

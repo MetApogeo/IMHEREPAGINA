@@ -152,7 +152,7 @@ const imagen = ref('');
             nombre: nombre.value,
             descripcion: descripcion.value,
             precio: precio.value,
-            id_perfil: exclusivo.value,
+            exclusivo: exclusivo.value,
             inventario: inventario.value,
             imagen: imagen.value 
         };
