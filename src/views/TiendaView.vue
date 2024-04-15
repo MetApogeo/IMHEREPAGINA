@@ -28,19 +28,23 @@ const obtenerProductos = async () => {
 
 
 
-const agregarCarrito = (id) => {
+const agregarCarrito = (producto) => {
   try {
     let carrito = JSON.parse(localStorage.getItem('carrito')) || []; // Obtiene el carrito o inicializa como un array vacío
+    const id = producto.id;
+
     if (!carrito.includes(id)) {
       carrito.push(id); // Agrega el ID del producto al carrito
       localStorage.setItem('carrito', JSON.stringify(carrito)); // Guarda el carrito actualizado en el almacenamiento local
-      console.log('Producto agregado al carrito'); 
+      console.log('Producto agregado al carrito:', producto.nombre); 
 
       // Establecer la variable productoAgregado en true y luego volver a false después de 3 segundos
       productoAgregado.value = true;
-      console.log('El producto ha sido agregado al carrito');
+      setTimeout(() => {
+        productoAgregado.value = false;
+      }, 3000);
     } else {
-      console.log('El producto ya está en el carrito');
+      console.log('El producto ya está en el carrito:', producto.nombre);
       // Aquí podrías mostrar un mensaje al usuario indicando que el producto ya está en el carrito
     }
   } catch (error) {
@@ -48,6 +52,7 @@ const agregarCarrito = (id) => {
     // Aquí podrías manejar el error de manera adecuada, por ejemplo, mostrando un mensaje al usuario
   }
 };
+
 
 const mostrarDetalles = (producto => {
   productoSeleccionado.value = producto;
@@ -119,10 +124,9 @@ onMounted(() => {
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-        <button type="button" class="btn btn-primary" @click="agregarCarrito(productoSeleccionado.id)" :disabled="productoAgregado">
+        <button type="button" class="btn btn-primary" @click="agregarCarrito(productoSeleccionado)" :disabled="productoAgregado">
           {{ productoAgregado ? 'Producto Agregado' : 'Agregar al carrito' }}
         </button>
-
         <div v-if="productoAgregado" class="alert alert-success" role="alert">
           El producto ha sido agregado al carrito.
         </div>

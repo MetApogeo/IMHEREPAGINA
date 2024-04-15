@@ -27,6 +27,12 @@ const router = createRouter({
       component: () => import('../views/CarritoView.vue')
     },
     {
+      path: '/carrito/checkout',
+      name: 'checkout',
+      component: () => import('../views/CheckoutView.vue'),
+      props: route => ({ carrito: route.params.carrito })
+    },
+    {
       path: '/registro',
       name: 'registro',
       component: () => import('../views/RegistroView.vue')

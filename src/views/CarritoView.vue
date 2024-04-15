@@ -111,7 +111,7 @@ watch(listaCarrito, () => {
       <!-- Botón para comprar -->
       <div class="row py-3">
         <div class="col-md-12 text-center">
-          <button @click="comprar" class="btn btn-primary">Comprar</button>
+          <router-link to="/carrito/checkout" class="btn btn-primary">Comprar</router-link>
         </div>
       </div>
     </div>
