@@ -8,7 +8,7 @@
                         <form @submit.prevent="agregarUsuario">
                         <button type="submit" class="btn btn-success">Agregar</button>
                         </form>
-                        <table class="table">
+                        <table class="table table-dark table-striped">
                         <thead>
                             <tr>
                             <th>Id</th>
@@ -187,3 +187,11 @@ const imagen = ref('');
         }
     }
 </script>
+
+
+<style>
+body{
+  background: linear-gradient(to bottom, #000000, #424242);
+  color: #ffffff;
+}
+</style>

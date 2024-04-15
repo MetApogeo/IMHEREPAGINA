@@ -86,3 +86,10 @@ const agregarUsuario = async () => {
     }
 };
 </script>
+
+<style>
+body{
+  background: linear-gradient(to bottom, #000000, #424242);
+  color: #ffffff;
+}
+</style>
