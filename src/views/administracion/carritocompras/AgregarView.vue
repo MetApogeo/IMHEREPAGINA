@@ -4,7 +4,7 @@
         <div class="espacio">
             <div class="container">
                 <div class="col-md-12">
-                <h2>Agregar carritocompras</h2>
+                <h2>Agregar Carrito Compras</h2>
                     <form @submit.prevent="agregarcarritocompras">
                         <div class="form-group">
                             <label for="id_usuario">id_usuario</label>
