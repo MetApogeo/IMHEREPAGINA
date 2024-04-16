@@ -5,30 +5,29 @@
             <div class="espacio">
                 <div class="container">
                     <div class="col-md-12">
-                        <form @submit.prevent="agregarproducto">
+                        <form @submit.prevent="agregarcarritocompras">
                         <button type="submit" class="btn btn-success">Agregar</button>
                         </form>
                         <table class="table table-dark table-striped">
                         <thead>
                             <tr>
                             <th>Id</th>
-                            <th>Nombre</th>
-                            <th>Precio</th>
-                            <td>Inventario</td> <!-- Columna para acciones -->
+                            <th>id_usuario</th>
+                            <th>estado</th>
                             <th>&nbsp;</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="producto in productos" :key="producto.id">
-                            <td>{{ producto.id }}</td>
-                            <td>{{ producto.nombre }}</td>
-                            <td>{{ producto.descripcion }}</td>
+                            <tr v-for="carritocompras in carritocomprass" :key="carritocompras.id">
+                            <td>{{ carritocompras.id }}</td>
+                            <td>{{ carritocompras.id_usuario }}</td>
+                            <td>{{ carritocompras.estado }}</td>
                             <td>
-                                <form @submit.prevent="eliminarproducto(producto.id)">
+                                <form @submit.prevent="eliminarcarritocompras(carritocompras.id)">
                                     <button @click="confirmarEliminar" class="btn btn-danger">Eliminar</button>
                                 </form>
                                 <!-- Button trigger modal -->
-                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" @click="AbrirModal(producto.id)">
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" @click="AbrirModal(carritocompras.id)">
                                 Editar
                                 </button>
 
@@ -42,28 +41,20 @@
                                             </div>
                                             <div class="modal-body">
                                                 <div class="form-group">
-                                                    <label for="nombre">Nombre</label>
-                                                    <input type="text" v-model="nombre" class="form-control" id="nombre" required>
+                                                    <label for="id_usuario">id_usuario</label>
+                                                    <input type="text" v-model="id_usuario" class="form-control" id="id_usuario" required>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="descripcion">Descripcion</label>
-                                                    <input type="text" v-model="descripcion" class="form-control" id="descripcion" required>
+                                                    <label for="estado">Estado</label>
+                                                    <select v-model="estado" class="form-control" id="estado" required>
+                                                        <option value="pendiente">Pendiente</option>
+                                                        <option value="completado">Completado</option>
+                                                        <option value="cancelado">Cancelado</option>
+                                                    </select>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="precio">precio</label>
-                                                    <input type="number" v-model="precio" class="form-control" id="precio" required>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="exclusivo">exclusivo</label>
-                                                    <input type="number" v-model="exclusivo" class="form-control" id="id_perfil" required>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="inventario">inventario</label>
-                                                    <input type="number" v-model="inventario" class="form-control" id="inventario" required>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="imagen">Imagen</label>
-                                                    <input type="text" v-model="imagen" class="form-control" id="imagen">
+                                                    <label for="total">Total</label>
+                                                    <input type="number" v-model="total" class="form-control" id="total" required>
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
@@ -92,77 +83,69 @@ import { useRouter } from 'vue-router';
 
 const router = useRouter();
 
-const productos = ref([]);
+const carritocomprass = ref([]);
 
-const producto = ref(null);
+const carritocompras = ref(null);
 
-const nombre = ref('');
-const descripcion = ref('');
-const precio = ref('');
-const exclusivo = ref('');
-const inventario = ref('');
-const imagen = ref('');
+const id_usuario = ref('');
+const estado = ref('');
+const total = ref('');
 
-    const cargarproductos = async () => {
+    const cargarcarritocomprass = async () => {
         try {
-            const response = await axios.get('http://127.0.0.1:8000/api/producto');
-            productos.value = response.data;
+            const response = await axios.get('http://127.0.0.1:8000/api/carritocompras');
+            carritocomprass.value = response.data;
         } catch (error) {
-            console.error('Error al cargar productos:', error);
+            console.error('Error al cargar carritocomprass:', error);
     }
     };
 
-    onMounted(cargarproductos);
+    onMounted(cargarcarritocomprass);
 
     const confirmarEliminar = () => {
-        return confirm("Realmente desea eliminar un producto");
+        return confirm("Realmente desea eliminar un carritocompras");
     };
 
-    const eliminarproducto = async (id) => {
+    const eliminarcarritocompras = async (id) => {
         try {
-            await axios.delete(`http://127.0.0.1:8000/api/producto/${id}`);
-            // Actualizar la lista de productos después de eliminar
-            cargarproductos();
+            await axios.delete(`http://127.0.0.1:8000/api/carritocompras/${id}`);
+            // Actualizar la lista de carritocomprass después de eliminar
+            cargarcarritocomprass();
         } catch (error) {
-            console.error('Error al eliminar producto:', error);
+            console.error('Error al eliminar carritocompras:', error);
         }
     };
     const AbrirModal = async (id) => {
         try {
-            const response = await axios.get(`http://127.0.0.1:8000/api/producto/${id}`);
-            producto.value = response.data;
-            nombre.value = producto.value.nombre;
-            descripcion.value = producto.value.descripcion;
-            precio.value = producto.value.precio;
-            exclusivo.value = producto.value.id_perfil;
-            inventario.value = producto.value.inventario;
-            imagen.value = producto.value.imagen;
+            const response = await axios.get(`http://127.0.0.1:8000/api/carritocompras/${id}`);
+            carritocompras.value = response.data;
+            id_usuario.value = carritocompras.value.id_usuario;
+            estado.value = carritocompras.value.estado;
+            total.value = carritocompras.value.total;
+            
         } catch (error) {
-            console.error('Error al editar producto:', error);
+            console.error('Error al editar carritocompras:', error);
         }
     };
 
-    const agregarproducto = () => {
-        router.push({ name: 'agregarproducto' }); // Cambia '/formulario-producto' por la ruta correcta
+    const agregarcarritocompras = () => {
+        router.push({ name: 'agregarcarritocompras' }); // Cambia '/formulario-carritocompras' por la ruta correcta
     };
 
     const Editar = async () => {
-        const productoNuevo = {
-            id: producto.value.id,
-            nombre: nombre.value,
-            descripcion: descripcion.value,
-            precio: precio.value,
-            exclusivo: exclusivo.value,
-            inventario: inventario.value,
-            imagen: imagen.value 
+        const carritocomprasNuevo = {
+            id: carritocompras.value.id,
+            id_usuario: id_usuario.value,
+            estado: estado.value,
+            total: total.value,
         };
 
         try {
-            const response = await axios.put(`http://127.0.0.1:8000/api/producto/${producto.value.id}`, productoNuevo);
-            console.log('producto actualizado:', response.data);
-            cargarproductos();
+            const response = await axios.put(`http://127.0.0.1:8000/api/carritocompras/${carritocompras.value.id}`, carritocomprasNuevo);
+            console.log('carritocompras actualizado:', response.data);
+            cargarcarritocomprass();
         } catch (error) {
-            console.error('Error al editar producto:', error);
+            console.error('Error al editar carritocompras:', error);
         }
     }
 </script>

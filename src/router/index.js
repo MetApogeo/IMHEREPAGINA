@@ -74,6 +74,11 @@ const router = createRouter({
         name: 'listadocarritos',
         component: () => import('../views/administracion/carritocompras/ListadoView.vue')
       },
+      {
+        path: '/admin/carritos/agregar',
+        name: 'agregarcarritocompras',
+        component: () => import('../views/administracion/carritocompras/AgregarView.vue')
+      },
 
       // ? PRODUCTOS
       {

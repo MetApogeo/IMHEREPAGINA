@@ -115,6 +115,14 @@ const goProductList = () => {
   // Navegar a la lista de productos
 	router.push({ name: 'tienda' });
 };
+
+/*onMounted(() => {
+    // Aquí colocas la parte del montaje de tu componente
+    stripe.value = Stripe('pk_test_51P5vMbRx81LoxLbfWrPxTVgFYMSC5OpElcSdB8yQotj2kkr4xYf2gghVqLejnjPvZgrhV319bQNV5cEJ2PLepUE200cogMxVs5');
+    const elements = stripe.value.elements();
+    card.value = elements.create('card');
+    card.value.mount('#card-element');
+});*/
 </script>
 
 <style scoped>
