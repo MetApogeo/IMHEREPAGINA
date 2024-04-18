@@ -5,6 +5,9 @@ import { watch } from 'vue';
 
 import { computed } from 'vue';
 import { useStore } from 'vuex';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
 
 const store = useStore();
 
@@ -53,7 +56,14 @@ const eliminarTodo = () => {
 };
 
 const comprar = () => {
-  router.push({ name: 'checkout', params: { carrito: listaCarrito.value } });
+  const checkoutItems = listaCarrito.value.map(producto => ({ 
+    id: producto.id,
+    nombre: producto.nombre,
+    descripcion: producto.descripcion,
+    precio: producto.precio,
+  }));
+  localStorage.setItem('checkout', JSON.stringify(checkoutItems));
+  router.push({ name: 'checkout' });
 };
 
 const calcularPrecioTotal = () => {
@@ -116,7 +126,7 @@ watch(() => store.state.carrito, () => {
       <!-- Botón para comprar -->
       <div class="row py-3">
         <div class="col-md-12 text-center">
-          <router-link to="/carrito/checkout" class="btn btn-primary">Comprar</router-link>
+          <button @click="comprar" class="btn btn-primary">Comprar</button>
         </div>
       </div>
     </div>
