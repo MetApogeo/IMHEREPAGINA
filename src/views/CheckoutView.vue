@@ -4,10 +4,43 @@
 			<div v-if="listaCarrito.length > 0">
 				<br><br><br><br><br>
 				<h1>Checkout</h1>
-				<p>Total: ${{ total }}</p>
+				<div class="row py-5 bg-white" style="margin-top: 50px; color:black; ">
+					<div  v-for="producto in listaCarrito" :key="producto.id" class="col-xs-12" >
+						<div class="row">
+							<div class="col-md-3">
+							<img class="card-img-top" :src="'http://127.0.0.1:8000/api/producto/foto/'+producto.imagen"  alt="Card image cap" style="width: 60%; ">
+							</div>
+							<div class="col-md-4">{{ producto.nombre }}<br>{{ producto.descripcion }}</div>
+							<div class="col-md-3"><p>${{ producto.precio }}</p></div>
+							<div class="col-md-2"><button @click="eliminarCarrito(producto.id)">Eliminar</button></div>
+						</div>
+					</div>
+				</div>
+				<p>Total: ${{ totalCarrito }}</p>
 				<form @submit.prevent="processPayment">
-					<div id="card-element">
-					<!-- Se montarán los elementos de Stripe aquí -->
+					<div class="input-field">
+						<label for="name">Nombre en la tarjeta</label>
+						<input type="text" id="name" v-model="cardName" required>
+					</div>
+					<div class="input-field">
+						<label for="card-number">Número de tarjeta</label>
+						<div id="card-number" class="input-element"></div>
+					</div>
+					<div class="input-field">
+						<label for="expiry">Fecha de expiración</label>
+						<div id="expiry" class="input-element"></div>
+					</div>
+					<div class="input-field">
+						<label for="cvc">CVC</label>
+						<div id="cvc" class="input-element"></div>
+					</div>
+					<div class="input-field">
+						<label for="email">Correo electrónico</label>
+						<input type="email" id="email" v-model="email" required>
+					</div>
+					<div class="input-field">
+						<label for="postal-code">Código Postal</label>
+						<input type="text" id="postal-code" v-model="postalCode" required>
 					</div>
 					<button :disabled="loading">
 					{{ loading ? 'Procesando...' : 'Pagar' }}
@@ -33,28 +66,38 @@
 import { ref, onMounted, watch } from 'vue';
 import axios from 'axios';
 import { useRouter } from 'vue-router';
+import { loadStripe } from '@stripe/stripe-js';
+
+import { computed } from 'vue';
+import { useStore } from 'vuex';
+
+const store = useStore();
+
+const listaCarrito = ref([]);
+const totalCarrito = ref(0);
 
 const router = useRouter();
 
 // Variable reactiva para almacenar la lista de productos y el carrito
 const listaProductos = ref([]);
-const listaCarrito = ref([]);
 const loading = ref(false);
-const stripe = ref(null);
+let stripe = null;
 const card = ref(null);
+const cardName = ref('');
+const email = ref('');
+const postalCode = ref('');
+let elements = null; 
 const total = ref(0);
+const stripePromess = loadStripe('pk_test_51P5vMbRx81LoxLbfWrPxTVgFYMSC5OpElcSdB8yQotj2kkr4xYf2gghVqLejnjPvZgrhV319bQNV5cEJ2PLepUE200cogMxVs5')
 
-const consultarProductos = async () => {
+
+const cargarCarrito = async () => {
 	try {
-		const response = await axios.get('http://127.0.0.1:8000/api/producto');
-		listaProductos.value = response.data;
-
-		// Consultar el carrito desde localStorage y filtrar los productos
-		const carrito = JSON.parse(localStorage.getItem('carrito')) || [];
-		listaCarrito.value = listaProductos.value.filter(producto => carrito.includes(producto.id));
+		await store.dispatch('cargarCarrito');
+		listaCarrito.value = store.state.carrito;
+		calcularPrecioTotal();
 	} catch (error) {
-		console.error('Error al obtener productos:', error);
-		// Aquí podrías manejar el error de manera adecuada, por ejemplo, mostrando un mensaje al usuario
+		console.error('Error al cargar el carrito:', error);
 	}
 };
 
@@ -72,43 +115,68 @@ const eliminarCarrito = (id) => {
 	}
 };
 
-const eliminarTodo = () => {
-	try {
-		// Eliminar todos los elementos del carrito en localStorage
-		localStorage.removeItem('carrito');
-		// Limpiar la lista de productos en el carrito
-		listaCarrito.value = [];
-	} catch (error) {
-		console.error('Error al eliminar todo el carrito:', error);
-		// Manejar el error según sea necesario
-	}
-};
 
 const calcularPrecioTotal = () => {
-	total.value = listaCarrito.value.reduce((acc, producto) => acc + producto.precio, 0).toFixed(2);
-};
+	totalCarrito.value = listaCarrito.value.reduce((total, producto) => total + producto.precio, 0).toFixed(2);
+}
 
 // Llama a la función consultarProductos cuando el componente se monta
 onMounted(() => {
-	consultarProductos();
+	cargarCarrito();
 });
 
-watch(listaCarrito, () => {
+watch(() => store.state.carrito, () => {
+	listaCarrito.value = store.state.carrito;
 	calcularPrecioTotal();
 });
 
 const processPayment = async () => {
-	loading.value = true;
-	try {
-		// Aquí deberías enviar los detalles del pedido al servidor para procesar el pago
-		console.log('Detalle del pedido:', listaCarrito.value);
-		console.log('Total:', total.value);
-		console.log('Pago procesado');
-	} catch (error) {
-		console.error('Error al procesar el pago:', error.message);
-	} finally {
-		loading.value = false;
-	}	
+	loading = true;
+			const accessToken = localStorage.getItem('miAppToken');
+
+			if (!elements || !stripe) {
+				errorMessage = 'Error al cargar el formulario de pago';
+				loading = false;
+				return;
+			}
+
+		try {
+				const cardElement = elements.getElement('cardNumber');
+				const { token, error } = await stripe.createToken(cardElement, {
+					name: cardName,
+					email: email,
+					address_zip: postalCode
+				});
+
+				if (error) {
+					console.error('Error al crear el token de la tarjeta:', error);
+					errorMessage = error.message;
+					loading = false;
+					return;
+				}
+
+				const response = await axios.post('http://localhost:8000/api/carritocompras', {
+					token: token.id,
+					total: total,
+					carrito: listaCarrito},{
+					headers: {
+						'Content-Type': 'application/json',
+						'Authorization': `Bearer ${accessToken}`
+					}
+				});
+
+				if (response.ok) {
+					console.log('Pago exitoso');
+				} else {
+					console.error('Error al procesar el pago:', response.statusText);
+					errorMessage = 'Error al procesar el pago';
+				}
+				loading = false;
+			} catch (error) {
+				console.error('Error al procesar la solicitud:', error);
+				errorMessage = 'Error al procesar la solicitud';
+				loading = false;
+			}
 };
 
 const goProductList = () => {
@@ -116,13 +184,35 @@ const goProductList = () => {
 	router.push({ name: 'tienda' });
 };
 
-/*onMounted(() => {
-    // Aquí colocas la parte del montaje de tu componente
-    stripe.value = Stripe('pk_test_51P5vMbRx81LoxLbfWrPxTVgFYMSC5OpElcSdB8yQotj2kkr4xYf2gghVqLejnjPvZgrhV319bQNV5cEJ2PLepUE200cogMxVs5');
-    const elements = stripe.value.elements();
-    card.value = elements.create('card');
-    card.value.mount('#card-element');
-});*/
+onMounted(() => {
+    stripePromess.then(stripeInstance => {
+		stripe = stripeInstance;
+		elements = stripe.elements();
+
+		// Estilo del elemento de tarjeta
+		const style = {
+			base: {
+			fontSize: '16px',
+			fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+			'::placeholder': {
+				color: '#aab7c4'
+			}
+			},
+			invalid: {
+			color: '#fa755a'
+			}
+		};
+
+		// Crear los elementos de tarjeta de crédito y montarlos
+		const cardNumber = elements.create('cardNumber', { style });
+		cardNumber.mount('#card-number');
+		const expiry = elements.create('cardExpiry', { style });
+		expiry.mount('#expiry');
+		const cvc = elements.create('cardCvc', { style });
+		cvc.mount('#cvc');
+	});
+});
+
 </script>
 
 <style scoped>

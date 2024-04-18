@@ -3,22 +3,26 @@ import axios from 'axios';
 import { ref, onMounted } from 'vue';
 import { watch } from 'vue';
 
+import { computed } from 'vue';
+import { useStore } from 'vuex';
+
+const store = useStore();
+
+
+const listaCarrito = ref([]);
+const totalCarrito = ref(0);
+
 // Variable reactiva para almacenar la lista de productos y el carrito
 const listaProductos = ref([]);
-const listaCarrito = ref([]);
-const precioTotal = ref(0);
 
-const consultarProductos = async () => {
+
+const cargarCarrito = async () => {
   try {
-    const response = await axios.get('http://127.0.0.1:8000/api/producto');
-    listaProductos.value = response.data;
-
-    // Consultar el carrito desde localStorage y filtrar los productos
-    const carrito = JSON.parse(localStorage.getItem('carrito')) || [];
-    listaCarrito.value = listaProductos.value.filter(producto => carrito.includes(producto.id));
+    await store.dispatch('cargarCarrito');
+    listaCarrito.value = store.state.carrito;
+    calcularPrecioTotal();
   } catch (error) {
-    console.error('Error al obtener productos:', error);
-    // Aquí podrías manejar el error de manera adecuada, por ejemplo, mostrando un mensaje al usuario
+    console.error('Error al cargar el carrito:', error);
   }
 };
 
@@ -49,20 +53,21 @@ const eliminarTodo = () => {
 };
 
 const comprar = () => {
-  console.log('Datos del carrito: ',listaCarrito.value);
+  router.push({ name: 'checkout', params: { carrito: listaCarrito.value } });
 };
 
 const calcularPrecioTotal = () => {
-  precioTotal.value = listaCarrito.value.reduce((total, producto) => total + producto.precio, 0).toFixed(2);
+  totalCarrito.value = listaCarrito.value.reduce((total, producto) => total + producto.precio, 0).toFixed(2);
 }
 
 
 // Llama a la función consultarProductos cuando el componente se monta
 onMounted(() => {
-  consultarProductos();
+  cargarCarrito();
 });
 
-watch(listaCarrito, () => {
+watch(() => store.state.carrito, () => {
+  listaCarrito.value = store.state.carrito;
   calcularPrecioTotal();
 });
 
@@ -104,7 +109,7 @@ watch(listaCarrito, () => {
         </div>
         <div class="col-md-6 text-end">
           <!-- Mostrar el precio total -->
-          <p class="fs-4">Precio total: ${{ precioTotal }}</p>
+          <p class="fs-4">Precio total: ${{ totalCarrito }}</p>
         </div>
       </div>
 

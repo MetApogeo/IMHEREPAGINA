@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@stripe/stripe-js": "^3.3.0",
     "apexcharts": "^3.46.0",
     "axios": "^1.6.7",
     "bootstrap": "^5.3.3",
