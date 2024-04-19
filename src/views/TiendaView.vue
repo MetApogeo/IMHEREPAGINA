@@ -113,7 +113,7 @@ onMounted(() => {
       <div class="modal-body">
         <div class="row" :class="{ 'producto-agregado' : productoAgregado}">
           <div class="col-md-6">
-            <img v-if="productoSeleccionado.imagen" :src="productoSeleccionado.imagen" class="img-fluid" :alt="productoSeleccionado.nombre">
+            <img v-if="productoSeleccionado.imagen" :src="'http://127.0.0.1:8000/api/producto/foto/'+productoSeleccionado.imagen" class="img-fluid" :alt="productoSeleccionado.nombre">
             <img v-else src="../assets/IMG/oso.png" class="img-fluid" :alt="productoSeleccionado.nombre">
           </div>
           <div class="col-md-6">

@@ -1,44 +1,37 @@
 <template>
 	<body>
-		<div class="container" >
+		<div class="container">
 			<div v-if="listaCarrito.length > 0">
-				<br><br><br><br><br>
-				<h1>Checkout</h1>
-				<div class="row py-5" style="margin-top: 100px; color:black; background-color: #424242; border-radius: 20px; color:white">
-					<div  v-for="producto in listaCarrito" :key="producto.id" class="col-xs-12 producto-container" >
-						<div class="row">
-							<div class="col-md-4">
-							<img class="card-img-top producto-img" :src="'http://127.0.0.1:8000/api/producto/foto/'+producto.imagen"  alt="Card image cap" style="width: 60%; ">
-							</div>
-							<div class="col-md-6">
-								<div class="row producto-nombre">
-									{{ producto.nombre }}
-								</div>
-								<div class="row producto-descripcion">
-									{{ producto.descripcion }}
-								</div>
-							</div>
-							<div class="col-md-2 producto-precio">${{ producto.precio }}</div>
+			<br><br><br><br><br>
+			<h1>Checkout</h1>
+			<div class="row py-5 checkout-container">
+				<div v-for="producto in listaCarrito" :key="producto.id" class="col-md-6 col-lg-4 col-xl-3">
+					<div class="producto-card">
+						<img class="card-img-top producto-img" :src="'http://127.0.0.1:8000/api/producto/foto/'+producto.imagen"  alt="Card image cap">
+						<div class="producto-info">
+						<div class="producto-nombre">{{ producto.nombre }}</div>
+						<div class="producto-descripcion">{{ producto.descripcion }}</div>
+						<div class="producto-precio">${{ producto.precio }}</div>
 						</div>
 					</div>
 				</div>
-				<div class="row py-3">
-					<div class="col-md-6">
-						
-					</div>
-					<div class="col-md-6 text-end">
-						<!-- Mostrar el precio total -->
-						<p class="fs-4">Precio total: ${{ totalCarrito }}</p>
-					</div>
+			</div>
+			<div class="row py-3">
+				<div class="col-md-6"></div>
+				<div class="col-md-6 text-end">
+					<!-- Mostrar el precio total -->
+					<p class="fs-4">Precio total: ${{ totalCarrito }}</p>
 				</div>
-				<PaymentForm :listaCarrito="listaCarrito"/>
-				</div>
-				<div v-else>
+			</div>
+			<PaymentForm :listaCarrito="listaCarrito"/>
+			</div>
+			<div v-else>
 				<p>El carrito está vacío.</p>
-				<br>
-				<button @click="goProductList">Ir a lista de Productos</button>
-			</div>	
+			<br>
+				<button	button @click="goProductList" class="btn btn-primary">Ir a lista de Productos</button>
+			</div>
 		</div>
+		<br><br>
 	</body>
 	
 </template>
@@ -88,38 +81,45 @@ body{
   color: #ffffff;
 }
 
-/* Estilos para la lista de productos en el carrito */
-.producto-container {
-  border-bottom: 1px solid #444444; /* Borde entre elementos */
-  padding: 15px 0; /* Espaciado interno */
+.container {
+  padding: 20px;
+}
+
+.checkout-container {
+  background-color: #424242;
+  border-radius: 20px;
+  color: white;
+}
+
+.producto-card {
+  border-bottom: 1px solid #444444;
+  padding: 15px 0;
 }
 
 .producto-img {
-  max-width: 100px; /* Ancho máximo de la imagen */
-  height: auto; /* Altura automática para mantener la proporción */
-  border-radius: 5px; /* Bordes redondeados */
-  margin-left: 60px;
+  max-width: 100%;
+  height: auto;
+  border-radius: 5px;
 }
 
 .producto-info {
-  padding-left: 15px; /* Espaciado a la izquierda */
+  padding-left: 15px;
 }
 
 .producto-nombre {
-  font-size: 18px; /* Tamaño de fuente del nombre del producto */
-  font-weight: bold; /* Negrita para el nombre */
+  font-size: 18px;
+  font-weight: bold;
 }
 
 .producto-descripcion {
-  font-size: 14px; /* Tamaño de fuente de la descripción */
-  margin-top: 5px; /* Margen superior */
-  color: #999999; /* Color de texto gris para descripción */
-  font-weight: 400;
+  font-size: 14px;
+  margin-top: 5px;
+  color: #999999;
 }
 
 .producto-precio {
-  font-size: 16px; /* Tamaño de fuente del precio */
-  margin-top: 10px; /* Margen superior */
+  font-size: 16px;
+  margin-top: 10px;
 }
 
 .eliminar-btn {

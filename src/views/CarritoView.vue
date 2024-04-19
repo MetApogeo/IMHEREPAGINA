@@ -61,7 +61,9 @@ const comprar = () => {
   router.push({ name: 'checkout' });
 };
 
-
+const irTienda = () => {
+  router.push({ name: 'tienda'});
+}
 
 
 // Llama a la función consultarProductos cuando el componente se monta
@@ -91,33 +93,23 @@ onMounted(async () => {
 <template >
   <!-- primera parte -->
 <body>
-  <div class="container" style="">
-      <div class="img-tienda row justify-content-center">
-        <div class="col-md-6 offset-md-3 ">
-          <img src="../assets/img/tienda.png" alt="Foto tienda" style="width: 13rem;">
-        </div>
-      </div>
-      <div class="row py-5" style="margin-top: 100px; color:black; background-color: #424242; border-radius: 20px; color:white">
-        <div  v-for="producto in listaCarrito" :key="producto.id" class="col-xs-12 producto-container" >
-          <div class="row">
-            <div class="col-md-3">
-              <img class="card-img-top producto-img" :src="'http://127.0.0.1:8000/api/producto/foto/'+producto.imagen"  alt="Card image cap" style="width: 60%; ">
+  <div class="container">
+    <div v-if="listaCarrito.length > 0">
+      <br><br><br><br><br>
+      <h1>Resumen de la compra</h1>
+      <div class="row py-5 checkout-container">
+        <div v-for="producto in listaCarrito" :key="producto.id" class="col-md-6 col-lg-4 col-xl-3">
+          <div class="producto-card">
+            <img class="card-img-top producto-img" :src="'http://127.0.0.1:8000/api/producto/foto/'+producto.imagen"  alt="Card image cap">
+            <div class="producto-info">
+              <div class="producto-nombre">{{ producto.nombre }}</div>
+              <div class="producto-descripcion">{{ producto.descripcion }}</div>
+              <div class="producto-precio">${{ producto.precio }}</div>
+              <div class="eliminar-btn-container"><button @click="eliminarCarrito(producto.id)" class="eliminar-btn btn">Eliminar</button></div>
             </div>
-            <div class="col-md-4">
-              <div class="row producto-nombre">
-                {{ producto.nombre }}
-              </div>
-              <div class="row producto-descripcion">
-                {{ producto.descripcion }}
-              </div>
-            </div>
-            <div class="col-md-3 producto-precio">${{ producto.precio }}</div>
-            <div class="col-md-2"><button @click="eliminarCarrito(producto.id)" class="eliminar-btn btn">Eliminar</button></div>
           </div>
         </div>
       </div>
-
-      <!-- Botón para eliminar todo el carrito -->
       <div class="row py-3">
         <div class="col-md-6">
           <button @click="eliminarTodo" class="btn btn-danger">Eliminar todo</button>
@@ -125,16 +117,16 @@ onMounted(async () => {
         <div class="col-md-6 text-end">
           <!-- Mostrar el precio total -->
           <p class="fs-4">Precio total: ${{ totalCarrito }}</p>
-        </div>
-      </div>
-
-      <!-- Botón para comprar -->
-      <div class="row py-3">
-        <div class="col-md-12 text-center">
           <button @click="comprar" class="btn btn-primary">Comprar</button>
         </div>
       </div>
     </div>
+    <div v-else>
+      <p>El carrito está vacío.</p>
+      <br>
+      <button @click="irTienda" class="btn btn-primary">Ir a lista de Productos</button>
+    </div>
+  </div>
 
 </body>
   
@@ -149,79 +141,89 @@ body{
 }
 
 
-/* Estilos para la lista de productos en el carrito */
-.producto-container {
-  border-bottom: 1px solid #444444; /* Borde entre elementos */
-  padding: 15px 0; /* Espaciado interno */
+container {
+  padding: 20px;
+}
+
+.checkout-container {
+  background-color: #424242;
+  border-radius: 20px;
+  color: white;
+}
+
+.producto-card {
+  border-bottom: 1px solid #444444;
+  padding: 15px 0;
 }
 
 .producto-img {
-  max-width: 100px; /* Ancho máximo de la imagen */
-  height: auto; /* Altura automática para mantener la proporción */
-  border-radius: 5px; /* Bordes redondeados */
-  margin-left: 60px;
+  max-width: 100%;
+  height: auto;
+  border-radius: 5px;
 }
 
 .producto-info {
-  padding-left: 15px; /* Espaciado a la izquierda */
+  padding-left: 15px;
 }
 
 .producto-nombre {
-  font-size: 18px; /* Tamaño de fuente del nombre del producto */
-  font-weight: bold; /* Negrita para el nombre */
+  font-size: 18px;
+  font-weight: bold;
 }
 
 .producto-descripcion {
-  font-size: 14px; /* Tamaño de fuente de la descripción */
-  margin-top: 5px; /* Margen superior */
-  color: #999999; /* Color de texto gris para descripción */
-  font-weight: 400;
+  font-size: 14px;
+  margin-top: 5px;
+  color: #999999;
 }
 
 .producto-precio {
-  font-size: 16px; /* Tamaño de fuente del precio */
-  margin-top: 10px; /* Margen superior */
+  font-size: 16px;
+  margin-top: 10px;
 }
 
 .eliminar-btn {
-  background-color: #ff4d4d; /* Color de fondo rojo para el botón eliminar */
-  color: #ffffff; /* Texto blanco */
-  border: none; /* Sin borde */
-  padding: 5px 10px; /* Espaciado interno */
-  border-radius: 5px; /* Bordes redondeados */
-  cursor: pointer; /* Cursor de puntero al pasar sobre el botón */
+  background-color: #ff4d4d;
+  color: #ffffff;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
 .eliminar-btn:hover {
-  background-color: #cc0000; /* Color de fondo rojo más oscuro al pasar sobre el botón */
+  background-color: #cc0000;
 }
 
-/* Estilos para los botones de acción */
+.eliminar-btn-container {
+  margin-top: 10px;
+}
+
 .btn {
-  margin-top: 20px; /* Margen superior */
-  padding: 10px 20px; /* Espaciado interno */
-  font-size: 16px; /* Tamaño de fuente */
-  border-radius: 5px; /* Bordes redondeados */
-  cursor: pointer; /* Cursor de puntero */
-}
-
-.btn-danger {
-  background-color: #ff4d4d; /* Color de fondo rojo */
-  border: none; /* Sin borde */
-  color: #ffffff; /* Texto blanco */
-}
-
-.btn-danger:hover {
-  background-color: #cc0000; /* Color de fondo rojo más oscuro al pasar sobre el botón */
+  margin-top: 20px;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
 .btn-primary {
-  background-color: #4d79ff; /* Color de fondo azul */
-  border: none; /* Sin borde */
-  color: #ffffff; /* Texto blanco */
+  background-color: #4d79ff;
+  border: none;
+  color: #ffffff;
 }
 
 .btn-primary:hover {
-  background-color: #0052cc; /* Color de fondo azul más oscuro al pasar sobre el botón */
+  background-color: #0052cc;
+}
+
+.btn-danger {
+  background-color: #ff4d4d;
+  border: none;
+  color: #ffffff;
+}
+
+.btn-danger:hover {
+  background-color: #cc0000;
 }
 </style>
