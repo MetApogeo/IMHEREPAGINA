@@ -89,7 +89,7 @@ onMounted(() => {
       <div v-for="(producto, index) in listaProductos" :key="index" class="col">
         <div class="card h-100 hover-effect producto" style="position: relative;" @click="mostrarDetalles(producto)" data-bs-toggle="modal" data-bs-target="#exampleModal">
           <!-- Utiliza la imagen del producto si está disponible, de lo contrario, muestra una imagen predeterminada -->
-          <img v-if="producto.imagen" :src="producto.imagen" class="card-img-top imgProduct" :alt="producto.nombre">
+          <img v-if="producto.imagen" :src="'http://127.0.0.1:8000/api/producto/foto/'+producto.imagen" class="card-img-top imgProduct" :alt="producto.nombre">
           <img v-else src="../assets/IMG/oso.png" class="card-img-top imgProduct" :alt="producto.nombre">
           <div class="card-body">
             <!-- Botones para agregar al carrito y ver detalles -->

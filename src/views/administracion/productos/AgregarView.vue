@@ -28,7 +28,7 @@
                         </div>
                         <div class="form-group">
                             <label for="imagen">Imagen</label>
-                            <input type="text" v-model="imagen" class="form-control" id="imagen">
+                            <input type="file" @change="handleFileUpload" class="form-control" id="imagen">
                         </div>
                         <button type="submit" class="btn btn-primary">Agregar producto</button>
                     </form>
@@ -68,6 +68,20 @@ const agregarproducto = async () => {
     } catch (error) {
         console.error('Error al agregar producto:', error);
     }
+};
+
+const handleFileUpload = (event) => {
+    const file = event.target.files[0];
+    const formData = new FormData();
+    formData.append('imagen', file);
+    axios.post('http://127.0.0.1:8000/api/producto/upload-imagen', formData)
+        .then(response => {
+            // Asignar la ruta de la imagen al campo 'imagen' del producto
+            imagen.value = response.data.url;
+        })
+        .catch(error => {
+            console.error('Error al subir la imagen:', error);
+        });
 };
 </script>
 

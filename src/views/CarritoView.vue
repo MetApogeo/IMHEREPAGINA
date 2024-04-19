@@ -55,6 +55,7 @@ const comprar = () => {
     nombre: producto.nombre,
     descripcion: producto.descripcion,
     precio: producto.precio,
+    imagen: producto.imagen
   }));
   localStorage.setItem('checkout', JSON.stringify(checkoutItems));
   router.push({ name: 'checkout' });
@@ -96,15 +97,22 @@ onMounted(async () => {
           <img src="../assets/img/tienda.png" alt="Foto tienda" style="width: 13rem;">
         </div>
       </div>
-      <div class="row py-5 bg-white" style="margin-top: 100px; color:black; ">
-        <div  v-for="producto in listaCarrito" :key="producto.id" class="col-xs-12" >
+      <div class="row py-5" style="margin-top: 100px; color:black; background-color: #424242; border-radius: 20px; color:white">
+        <div  v-for="producto in listaCarrito" :key="producto.id" class="col-xs-12 producto-container" >
           <div class="row">
             <div class="col-md-3">
-              <img class="card-img-top" :src="'http://127.0.0.1:8000/api/producto/foto/'+producto.imagen"  alt="Card image cap" style="width: 60%; ">
+              <img class="card-img-top producto-img" :src="'http://127.0.0.1:8000/api/producto/foto/'+producto.imagen"  alt="Card image cap" style="width: 60%; ">
             </div>
-            <div class="col-md-4">{{ producto.nombre }}<br>{{ producto.descripcion }}</div>
-            <div class="col-md-3"><p>${{ producto.precio }}</p></div>
-            <div class="col-md-2"><button @click="eliminarCarrito(producto.id)">Eliminar</button></div>
+            <div class="col-md-4">
+              <div class="row producto-nombre">
+                {{ producto.nombre }}
+              </div>
+              <div class="row producto-descripcion">
+                {{ producto.descripcion }}
+              </div>
+            </div>
+            <div class="col-md-3 producto-precio">${{ producto.precio }}</div>
+            <div class="col-md-2"><button @click="eliminarCarrito(producto.id)" class="eliminar-btn btn">Eliminar</button></div>
           </div>
         </div>
       </div>
@@ -137,41 +145,83 @@ onMounted(async () => {
 body{
   background: linear-gradient(to bottom, #000000, #424242);
   color: #ffffff;
-}
-.context{
-  background: url(../assets/IMG/fondooo.png);
-}
-.card-title{
-  color: white;
-  font-family:Bonechiller Free;
-  text-align: center;
   
 }
-.card-text{
-  color: rgb(0, 0, 0);
-  text-align: center;
+
+
+/* Estilos para la lista de productos en el carrito */
+.producto-container {
+  border-bottom: 1px solid #444444; /* Borde entre elementos */
+  padding: 15px 0; /* Espaciado interno */
 }
 
-.foto{
-    max-width:180px;
-    max-height:180px;
+.producto-img {
+  max-width: 100px; /* Ancho máximo de la imagen */
+  height: auto; /* Altura automática para mantener la proporción */
+  border-radius: 5px; /* Bordes redondeados */
+  margin-left: 60px;
 }
 
-.imgProduct{
-  max-width:150px;
-  max-height:150px;
+.producto-info {
+  padding-left: 15px; /* Espaciado a la izquierda */
 }
 
-.card{
-  align-items: center;
+.producto-nombre {
+  font-size: 18px; /* Tamaño de fuente del nombre del producto */
+  font-weight: bold; /* Negrita para el nombre */
 }
-.pack{
-  text-align: center;
+
+.producto-descripcion {
+  font-size: 14px; /* Tamaño de fuente de la descripción */
+  margin-top: 5px; /* Margen superior */
+  color: #999999; /* Color de texto gris para descripción */
+  font-weight: 400;
 }
-.popular{
-  text-align: center;
+
+.producto-precio {
+  font-size: 16px; /* Tamaño de fuente del precio */
+  margin-top: 10px; /* Margen superior */
 }
-.productos{
-  text-align: center;
+
+.eliminar-btn {
+  background-color: #ff4d4d; /* Color de fondo rojo para el botón eliminar */
+  color: #ffffff; /* Texto blanco */
+  border: none; /* Sin borde */
+  padding: 5px 10px; /* Espaciado interno */
+  border-radius: 5px; /* Bordes redondeados */
+  cursor: pointer; /* Cursor de puntero al pasar sobre el botón */
+}
+
+.eliminar-btn:hover {
+  background-color: #cc0000; /* Color de fondo rojo más oscuro al pasar sobre el botón */
+}
+
+/* Estilos para los botones de acción */
+.btn {
+  margin-top: 20px; /* Margen superior */
+  padding: 10px 20px; /* Espaciado interno */
+  font-size: 16px; /* Tamaño de fuente */
+  border-radius: 5px; /* Bordes redondeados */
+  cursor: pointer; /* Cursor de puntero */
+}
+
+.btn-danger {
+  background-color: #ff4d4d; /* Color de fondo rojo */
+  border: none; /* Sin borde */
+  color: #ffffff; /* Texto blanco */
+}
+
+.btn-danger:hover {
+  background-color: #cc0000; /* Color de fondo rojo más oscuro al pasar sobre el botón */
+}
+
+.btn-primary {
+  background-color: #4d79ff; /* Color de fondo azul */
+  border: none; /* Sin borde */
+  color: #ffffff; /* Texto blanco */
+}
+
+.btn-primary:hover {
+  background-color: #0052cc; /* Color de fondo azul más oscuro al pasar sobre el botón */
 }
 </style>

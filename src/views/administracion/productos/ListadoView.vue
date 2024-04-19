@@ -55,7 +55,7 @@
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="exclusivo">exclusivo</label>
-                                                    <input type="number" v-model="exclusivo" class="form-control" id="id_perfil" required>
+                                                    <input type="number" v-model="exclusivo" class="form-control" id="exclusivo" required>
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="inventario">inventario</label>
@@ -63,7 +63,8 @@
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="imagen">Imagen</label>
-                                                    <input type="text" v-model="imagen" class="form-control" id="imagen">
+                                                    <img v-if="imagen" :src="'http://127.0.0.1:8000/api/producto/foto/'+imagen" class="img-preview" alt="Vista previa de la imagen">
+                                                    <input type="file" id="imagen" @change="handleFileUpload">
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
@@ -134,9 +135,10 @@ const imagen = ref('');
             nombre.value = producto.value.nombre;
             descripcion.value = producto.value.descripcion;
             precio.value = producto.value.precio;
-            exclusivo.value = producto.value.id_perfil;
+            exclusivo.value = producto.value.exclusivo;
             inventario.value = producto.value.inventario;
             imagen.value = producto.value.imagen;
+            console.log(imagen.value);
         } catch (error) {
             console.error('Error al editar producto:', error);
         }
@@ -165,11 +167,47 @@ const imagen = ref('');
             console.error('Error al editar producto:', error);
         }
     }
+
+    const handleFileUpload = (event) => {
+    const file = event.target.files[0];
+    const formData = new FormData();
+    formData.append('imagen', file);
+
+    axios.post('http://127.0.0.1:8000/api/producto/upload-imagen', formData
+    )
+    .then(response => {
+        // Actualizar la ruta de la imagen en la variable local
+        imagen.value = response.data.url;
+
+        // Actualizar la ruta de la imagen en el producto
+        producto.value.imagen = response.data.url;
+
+        // Actualizar la imagen del producto en el servidor
+        axios.put(`http://127.0.0.1:8000/api/producto/${producto.value.id}`, { imagen: response.data.url })
+        .then(response => {
+            // Manejar la respuesta si es necesario
+            console.log('Imagen del producto actualizada en el servidor:', response.data);
+        })
+        .catch(error => {
+            console.error('Error al actualizar la imagen del producto en el servidor:', error);
+        });
+    })
+    .catch(error => {
+        console.error('Error al subir la imagen:', error);
+    });
+};
+
+
 </script>
 
 <style>
 body{
   background: linear-gradient(to bottom, #000000, #424242);
   color: #ffffff;
+}
+.img-preview {
+    max-width: 100%;
+    height: auto;
+    margin-top: 10px;
 }
 </style>
