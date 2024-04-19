@@ -7,7 +7,7 @@ import { computed } from 'vue';
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
 
-import { cargarCarrito, calcularTotalCarrito } from './api';
+import { cargarCarrito, calcularTotalCarrito } from '../api/api';
 
 const router = useRouter();
 
@@ -21,15 +21,7 @@ const totalCarrito = ref(0);
 const listaProductos = ref([]);
 
 
-const cargarCarrito = async () => {
-  try {
-    await store.dispatch('cargarCarrito');
-    listaCarrito.value = store.state.carrito;
-    calcularPrecioTotal();
-  } catch (error) {
-    console.error('Error al cargar el carrito:', error);
-  }
-};
+
 
 const eliminarCarrito = (id) => {
   try {
@@ -68,20 +60,23 @@ const comprar = () => {
   router.push({ name: 'checkout' });
 };
 
-const calcularPrecioTotal = () => {
-  totalCarrito.value = listaCarrito.value.reduce((total, producto) => total + producto.precio, 0).toFixed(2);
-}
+
 
 
 // Llama a la función consultarProductos cuando el componente se monta
-onMounted(() => {
-  cargarCarrito();
+onMounted(async () => {
+  try {
+    // Cargar el carrito desde el API
+    listaCarrito.value = await cargarCarrito();
+
+    // Calcular el total del carrito
+    totalCarrito.value = calcularTotalCarrito(listaCarrito.value);
+  } catch (error) {
+    console.error('Error al cargar el carrito:', error);
+    // Manejar el error según sea necesario
+  }
 });
 
-watch(() => store.state.carrito, () => {
-  listaCarrito.value = store.state.carrito;
-  calcularPrecioTotal();
-});
 
 
 

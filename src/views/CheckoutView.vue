@@ -16,7 +16,7 @@
 					</div>
 				</div>
 				<p>Total: ${{ totalCarrito }}</p>
-				<PaymentForm />
+				<PaymentForm :listaCarrito="listaCarrito"/>
 				</div>
 				<div v-else>
 				<p>El carrito está vacío.</p>
@@ -31,6 +31,7 @@
 <script setup>
 import { ref, onMounted} from 'vue';
 import { useRouter } from 'vue-router';
+import { loadStripe } from '@stripe/stripe-js';
 import PaymentForm from '../components/PaymentForm.vue';
 
 const listaCarrito = ref([]);

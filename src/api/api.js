@@ -12,7 +12,7 @@ export const obtenerProductos = async () => {
     }
 };
 
-export const cargarCarrito = async ({ commit }) => { 
+export const cargarCarrito = async () => { 
     try {
         // Obtener la lista de productos desde la API
         const productos = await obtenerProductos();
@@ -23,13 +23,13 @@ export const cargarCarrito = async ({ commit }) => {
         // Filtrar los productos que están en el carrito
         const productosEnCarrito = productos.filter(producto => carrito.includes(producto.id));
 
-        // Actualizar el estado del carrito en Vuex
-        commit('SET_CARRITO', productosEnCarrito);
+        return productosEnCarrito;
     } catch (error) {
         console.error('Error al cargar el carrito:', error);
-        // Aquí podrías manejar el error de acuerdo a tus necesidades
+        throw error;
     }
 };
+
 
 export const calcularTotalCarrito = (productosEnCarrito) => {
     return productosEnCarrito.reduce((total, producto) => total + producto.precio, 0);

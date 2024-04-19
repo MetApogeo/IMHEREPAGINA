@@ -37,20 +37,25 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import axios from 'axios';
 import { loadStripe } from '@stripe/stripe-js';
+import { cargarCarrito, calcularTotalCarrito } from '../api/api';
+
+const listaCarrito = ref([]);
+const totalCarrito = ref(0);
 
 let stripe = null;
 let elements = null;
 const cardName = ref('');
 const email = ref('');
 const postalCode = ref('');
-const loading = ref(false);
+let loading = false;
 
 const stripePromess = loadStripe('pk_test_51P5vMbRx81LoxLbfWrPxTVgFYMSC5OpElcSdB8yQotj2kkr4xYf2gghVqLejnjPvZgrhV319bQNV5cEJ2PLepUE200cogMxVs5');
 
-document.addEventListener('DOMContentLoaded', async () => {
+
+onMounted(async () => {
     try {
         stripePromess.then(stripeInstance => {
         stripe = stripeInstance;
@@ -81,6 +86,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     } catch (error) {
         console.error('Error:', error);
     }
+
 });
 
 const processPayment = async () => {
@@ -89,16 +95,14 @@ const processPayment = async () => {
 
 			if (!elements || !stripe) {
 				errorMessage = 'Error al cargar el formulario de pago';
-				loading = false;
+				loading.value = false;
 				return;
 			}
 
 		try {
 				const cardElement = elements.getElement('cardNumber');
 				const { token, error } = await stripe.createToken(cardElement, {
-					name: cardName,
-					email: email,
-					address_zip: postalCode
+					name: cardName.value,
 				});
 
 				if (error) {
@@ -108,22 +112,34 @@ const processPayment = async () => {
 					return;
 				}
 
+                // Cargar el carrito desde el API
+                listaCarrito.value = await cargarCarrito();
+
+                // Calcular el total del carrito
+                totalCarrito.value = calcularTotalCarrito(listaCarrito.value);
+                const emailValue = email.value.toString();
+                const postalCodeValue = postalCode.value.toString();
+                console.log(listaCarrito.value);
+
 				const response = await axios.post('http://localhost:8000/api/carritocompras', {
-					token: token.id,
-					total: total,
-					carrito: listaCarrito},{
+					datosTarjeta: token.id,
+					total: totalCarrito.value,
+                    email: emailValue,
+                    postalCode: postalCodeValue,
+					productos: listaCarrito.value},
+                    {
 					headers: {
 						'Content-Type': 'application/json',
 						'Authorization': `Bearer ${accessToken}`
 					}
 				});
 
-				if (response.ok) {
-					console.log('Pago exitoso');
-				} else {
-					console.error('Error al procesar el pago:', response.statusText);
-					errorMessage = 'Error al procesar el pago';
-				}
+				if (response.status === 200) {
+                    console.log('Pago exitoso');
+                } else {
+                    console.error('Error al procesar el pago:', response.statusText);
+                    errorMessage = 'Error al procesar el pago';
+                }
 				loading = false;
 			} catch (error) {
 				console.error('Error al procesar la solicitud:', error);

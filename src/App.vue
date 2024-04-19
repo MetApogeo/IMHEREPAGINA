@@ -15,13 +15,6 @@ const navbarVisible = ref(token.value !== null);
 const user = ref(null);
 const router = useRouter()
 
-watch(() => store.state.carrito.listaCarrito, () => {
-  // Manejar cambios en el carrito
-});
-
-onMounted(() => {
-  store.dispatch('cargarCarrito');
-});
 
 // Observar cambios en el token y actualizar la visibilidad del navbar
 watch(() => store.state.token, (newToken) => {
