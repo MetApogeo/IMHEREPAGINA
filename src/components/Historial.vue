@@ -8,7 +8,11 @@
 
     const historial = ref([]);
     const detalles = ref([]);
+    const detalle = ref([]);
+    const mostrar = ref(false);
     const mostrarDetalles = ref({}); // Declarar mostrarDetalles como un ref
+    // Crear un array ref para almacenar los productos
+    const productos = ref([]);
 
     const cargarHistorial = async () => {
     try {
@@ -39,14 +43,51 @@
                 const response = await axios.get('http://127.0.0.1:8000/api/detalletransaccion');
                 detalles.value = response.data.filter(carrito => carrito.id_carrito === carritoId)
                 console.log(carritoId);
+                console.log(detalles.value);
+
+                // Obtener un conjunto único de id_producto
+                const idProductos = new Set(detalles.value.map(detalle => detalle.id_producto));
+
+                // Obtener los detalles de los productos correspondientes a los id_producto
+                const responseProductos = await Promise.all(
+                    [...idProductos].map(async idProducto => {
+                        return await axios.get(`http://127.0.0.1:8000/api/producto/${idProducto}`);
+                    })
+                );
+
+                // Limpiar el array productos antes de agregar los nuevos productos
+                productos.value.splice(0);
+
+                // Asociar los detalles del producto con los detalles de transacción
+                detalles.value.forEach(detalle => {
+                    const detalleProductos = responseProductos.filter(resp => resp.data.id === detalle.id_producto);
+                    detalle.productos = detalleProductos.map(resp => resp.data);
+                    productos.value.push(...detalle.productos);
+                });
+
+                console.log('detalles actualizados', detalles.value);
+                console.log('Productos:', productos.value);
                 //historial.value.find().detallesTransaccion = response.data;
                 //console.log(historial.value.find(carrito => carrito.id === carritoId).detallesTransaccion);
+
+                
+                // Alternar la visibilidad del carrito seleccionado
+                mostrarDetalles.value[carritoId] = !mostrarDetalles.value[carritoId];
+
+                // Cerrar los detalles de los otros carritos si están abiertos
+                Object.keys(mostrarDetalles.value).forEach(key => {
+                    if (key !== carritoId.toString()) {
+                        mostrarDetalles.value[key] = false;
+                    }
+                });
+                 // Mostrar solo el detalle del carrito seleccionado
+                console.log(mostrarDetalles.value[carritoId]);
+
+                mostrar.value = mostrarDetalles.value[carritoId];
+                console.log(mostrar);
             } catch (error) {
                 console.error('Error al obtener los detalles de la transacción:', error);
             }
-        
-        // Mostrar u ocultar los detalles de la transacción
-        mostrarDetalles.value[carritoId] = !mostrarDetalles.value[carritoId];
     };
 
 
@@ -66,30 +107,30 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="carrito in historial" :key="carrito.id">
-                                <td>
-                                    <!-- Mostrar icono de flecha -->
-                                    <span @click="toggleDetalles(carrito.id)" class="mostrar-detalles">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16" :class="{ 'rotated': mostrarDetalles[carrito.id] }">
-                                            <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
-                                        </svg>
-                                    </span>
-                                </td>
-                                <td>{{ carrito.estado }}</td>
-                                <td>{{ formatearFecha(carrito.created_at) }}</td>
-                                <td>{{ carrito.total }}</td>
-                            </tr>
-                            <!-- Mostrar los detalles de la transacción filtrados por carritoId -->
-                            <tr v-for="detalle in detalles.value" :key="`detalle-${detalle.id}`" v-if="mostrarDetalles[detalles.id_carrito]">
-                            <td colspan="4">
-                                <ul>
-                                <li>{{ detalle.id_producto }} - Cantidad: {{ detalle.cantidad }}, Precio: {{ detalle.precio }}</li>
-                                </ul>
-                            </td>
-                            </tr>
-
-
-
+                            <template v-for="carrito in historial" :key="carrito.id">
+                                <tr>
+                                    <td>
+                                        <!-- Mostrar icono de flecha -->
+                                        <span @click="toggleDetalles(carrito.id)" class="mostrar-detalles">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16" :class="{ 'rotated': mostrarDetalles[carrito.id] }">
+                                                <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
+                                            </svg>
+                                        </span>
+                                    </td>
+                                    <td>{{ carrito.estado }}</td>
+                                    <td>{{ formatearFecha(carrito.created_at) }}</td>
+                                    <td>{{ carrito.total }}</td>
+                                </tr>
+                                <tr v-show="mostrar">
+                                    <td colspan="4" v-if="mostrarDetalles[carrito.id]">
+                                        <ul>
+                                            <li v-for="producto in productos" :key="producto.id">
+                                                {{ producto.nombre }}, Precio: {{ producto.precio }}
+                                            </li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                            </template>
                         </tbody>
                     </table>
                 </div>

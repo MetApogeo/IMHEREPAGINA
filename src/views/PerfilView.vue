@@ -44,7 +44,7 @@
                   </div>
               <div>
                   <p v-if="token"></p>
-                  <button class="btn btn-outline-danger" style="margin-bottom: 10px;" @click="eliminarToken">Cerrar Sesión</button>
+                  <button class="btn btn-danger position-absolute bottom-0 end-0 m-3" style="z-index: 100;" @click="eliminarToken">Cerrar Sesión</button>
               </div>
           </div>
               <div>

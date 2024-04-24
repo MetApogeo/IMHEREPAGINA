@@ -1,183 +1,170 @@
 <script setup>
 import TheWelcome from '../components/TheWelcome.vue'
+
 </script>
 
 <template>
-<body >
+<body>
     <main>
         <!-- PRIMERA SECCION -->
-        <div class="gradient-background">
-            <div class="contenedorsito">
-                <div class="texto">
-                    <div class="col-12 mt-auto mb-5 text-center">
-                        <h3 style="padding-top: 7rem;" class="letter">VEN Y ADENTRATE EN</h3>
-                        <h1 class="text-black mb-5 titulo">I´m Here</h1>
-                        <button type="button" class="btn btn-outline-light">JUEGA AHORA</button>
-                        <br>
-                        <br>
-                        <!-- <a class="jugar-ahora" href="">Juega Ahora</a> -->
-                        <h2 class="text-justify mb-5 text-white parrafo">
-                            Conoce las pesadillas más grandes que habitan en su casa
-                        </h2>
-                    </div>
-                </div>
+        <div class="gradient-background container scroll " style="height: 50rem; padding-top: 20rem;  " >
+            <div class="row" style="padding-left: 28rem">
+                <h1 class="text-white scroll-text">
+                    I´M HERE
+                </h1>
+              </div>
             </div>
-        </div>
+            <!-- <section>
+              <div>
+                <h1>
+                  <span>NUEVO</span>
+                  <br>
+                  <span>Iphone 15 pro</span>
+                </h1>
+              </div>
+            </section>
+            <section>
+              <h3>y todo con css</h3>
+            </section> -->
 
         <!-- SEGUNDA SECCION -->
-        <div class="gradient">
+        <div class="gradient" style="height: 42rem; padding-top: 3rem;align-items: center; ">
         <div class="contenedor animar">
             <!-- Contenido del primer contenedor -->
-            <div class="container SecSec">
-                <div class="container inter">
-                    <div class="row">
-                    <div class="col-md-6">
-                        <!-- <img src="../assets/IMG/juego1.jpg" class="img-thumbnail" alt="..."> -->
-                        <h1>Sipnopsis</h1>
-                        <br>
-                        <p class="sipno">
-                            Adéntrate en el inquietante mundo de I'm here y acompaña a Lilith en un escalofriante
-                            viaje hacia las profundidades de sus pesadillas y traumas más oscuros. <br><br>
-                            Prepárate para experimentar un juego de terror psicológico como ningún otro,
-                            donde los límites entre la realidad y la imaginación se desdibujan <br><br>
-                            En este cautivador videojuego, serás testigo de la compleja psique de Lilith
-                            mientras lucha contra sus miedos y enfrenta desafíos perturbadores. <br><br>
-                            ¿Estás listo para desafiar tus propios límites mentales y emocionales?
-                        </p>
-                    </div>
-                    <div class="col-md-6">
-                        <img src="../assets/IMG/juego1.jpg" class="img-thumbnail" alt="...">
-                        <br>
-                        <br>
-                        <img  src="../assets/IMG/juego3.jpg" class="img-thumbnail .right-aligned"  alt="...">
-                </div>
-                </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-            <!-- TECERA SECCION -->
-        <div class="contenedor animar powerUp">
-            <!-- Contenido del segundo contenedor -->
-            <div class="container SecSec">
-                <div class="container inter">
-                <div class="row">
-                    <div class="col-md-6">
-
-                    </div>
-                    <div class="col-md-6">
-                        <h1 class="power">Desbloqueo de Power Ups</h1>
-                        <br>
-                        <p class="contexto">
-                            Al adentrarte en el mundo inquietante y desafiante del videojuego, te
-                            encontrarás con numerosos cofres misteriosos que resguardan poderosos powerups.
-                            Sin embargo, para acceder a estos tesoros, deberás recolectar las llaves
-                            necesarias que se encuentran ocultas en distintos lugares del escenario.<br><br>
-                            Con ingenio y astucia, deberás explorar cada rincón del juego para encontrar
-                            estas preciadas llaves. El mapa estará lleno de secretos y acertijos que
-                            deberás resolver, lo que te llevará a sumergirte aún más en la atmósfera
-                            enigmática del juego.<br><br>
-                        </p>
+            <div class="row" >
+              <div class="col-lg-5 ">
+                <!-- la siponisi -->
+                <h1 id="titulo">!!CONOCE LOS TEMORES DE LILITH!!</h1>
+                <br>
+                <p id="introduccion">Adéntrate en el inquietante mundo de I'm here y acompaña a Lilith 
+                  en un escalofriante
+                  viaje hacia las profundidades de sus pesadillas y traumas 
+                  más oscuros.</p>
+                <div class="row" id="datos">
+                  <div class="col-md-4">
+                    <div class="container">
+                      <h6 id="info">20/Abril/2024</h6>
                     </div>
                   </div>
-                    
-                  
+                  <div class="col-md-4">
+                    <div class="container">
+                      <h6>Genero: Terror</h6>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="container">
+                      <h6>Desarrollador UTM</h6>
+                    </div>
+                  </div>
                 </div>
+                <div class="row" style="padding-left: 17.5rem; padding-top: 2rem;">
+                 
+                    <button type="button" class="btn btn-outline-light" style="width: 7rem;">COMPRAR</button>
+                 
+                </div>
+              </div>
+              <div class="col-md-6 col-xs-12" style="padding-left: 9rem;">
+                <!-- video -->
+  <div class="container" style="position: relative; width: 100%; max-width: 800px; margin: 0 auto; padding-top: 5rem;">
+    <video style="max-width: 100%; height: auto;" controls autoplay loop muted>
+                          <source src="../assets/IMG/imhere.mp4" type="video/mp4">">
+                      </video>
+  </div>
+              </div>
             </div>
-        </div>
-
-            <!-- CUARTA SECCION -->
-        <div class="contenedor animar enemigos">
-            <!-- Contenido del tercer contenedor -->
-
-            <div class="container SecSec">
-                <div class="container inter">
+            </div>
+          </div>
+        
+            <!-- TECERA SECCION -->
+            <!-- Contenido del segundo contenedor -->
+            <div class=" SecSec tercerasec" style="height: 50rem; padding-top: 2rem;">
+                <div class="container">
                     <div class="row">
-                    <div class="col-md-6">
-                        <h1 class="enemy">Variedad de enemigos</h1>
-                        <br>
-                        <br>
-                        <p class="parrfo">
-                            En esta aterradora aventura, te sumergirás en un mundo plagado de demonios
-                            y terrores psicológicos. Enfrenta al demonio Scarly, una entidad que
-                            personifica el abuso que Lilith sufrió; desafía al imponente Heaver,
-                            el demonio que representa los traumas causados por desastres naturales
-                            y violencia doméstica; y enfrenta tus propios miedos con Verbrannt,
-                            el demonio de fuego que simboliza el incendio que marcó el destino de Lilith. <br><br>
-
-                            Cada enemigo te presentará desafíos únicos y te pondrá a prueba tanto
-                            mental como emocionalmente. ¿Tienes lo necesario para escapar de estos
-                            temibles seres y ayudar a Lilith a encontrar la fuerza para superar sus traumas?
-                        </p>
+                    <!-- titulo -->
+                    <div class="col-md-12">
+                        <h1 class="Titulo3">CARACTERISTICAS</h1>
                     </div>
-                    <div class="col-md-3">
-                        <div class="card" style="width: 18rem;">
-                        <img src="../assets/IMG/flaca.png" class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <p class="card-text">Su cabello largo y enmarañado cae como sombras negras a su alrededor, creando una
-                                            apariencia que evoca la oscuridad y el caos. Su cuerpo es extremadamente flaco y alargado,
-                                            como si la crueldad y el sufrimiento hubieran desgastado su esencia, dejándola como una
-                                            figura espectral y emaciada.</p>
+                    <!-- fila 1 -->
+                        <div class="row">
+                            <div class="col-md-6">
+                                <img class="juego1 img-fluid mt-2"  src="../assets/IMG/juego1.jpg" alt="juego imhere">
+                            </div>
+                            <div class="col-md-6">
+                                <div class="container bg-white baner">
+                                    <h5 id="tiles">enbárcate a un lugar de aventuras</h5>
+                                </div>
+                                <h4 id="text" >Prepárate para experimentar un juego de terror psicológico como ningún otro,
+                            donde los límites entre la realidad y la imaginación se desdibujan </h4>
+                            </div>
+                        </div>
+                        <!-- fila 2 -->
+                        <div class="row justify-content-center" style="padding-top: 2rem;">
+                            <div class="col-md-6">
+                                <div class="container bg-white baner2">
+                                    <h5 id="tiles">REVIVE TUS RECURDOS BUSCANDO LOS COFRES</h5>
+                                </div>
+                                <h4 id="text" >Al adentrarte en el mundo inquietante y desafiante del videojuego, te
+                            encontrarás con numerosos cofres misteriosos que resguardan poderosos powerups.
+                            Sin embargo, para acceder a estos tesoros, deberás recolectar las llaves
+                            necesarias que se encuentran ocultas en distintos lugares del escenario.</h4>
+                            </div>
+                            <div class="col-md-6">
+                                <img class="juego1 img-fluid mt-2"  src="../assets/IMG/juego1.jpg" alt="juego imhere">
+                            </div>
+                        </div>
+                        
+                        <!-- fila3 -->
+                        <div class="row" style="padding-top: 2rem;">
+                        <div class="col-md-6">
+                            <img class="juego1 img-fluid mt-2"  src="../assets/IMG/juego1.jpg" alt="juego imhere">
+                        </div>
+                        <div class="col-md-6">
+                            <div class="comntainer bg-white baner3">
+                                <h5 id="tiles">adskalsdaskd</h5>
+                            </div>
+                            <p id="text" >Con ingenio y astucia, deberás explorar cada rincón del juego para encontrar
+                            estas preciadas llaves. El mapa estará lleno de secretos y acertijos que
+                            deberás resolver, lo que te llevará a sumergirte aún más en la atmósfera
+                            enigmática del juego
+                            </p>
                         </div>
                         </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="card" style="width: 18rem;">
-                        <img src="../assets/IMG/pesas.png" class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <p class="card-text">Heaver, el demonio que personifica los traumas causados por terremotos y
-                                            fenómenos naturales, así como la violencia doméstica, es una figura imponente
-                                            y aterradora que refleja el peso devastador de estas experiencias.Su aspecto corpulento y gordo denota una presencia amenazante y dominante.</p>
                         </div>
-                        </div>
-                    </div>
                 </div>
-                </div>
-            </div>
+                    </div>
+                
+            <!-- CUARTA SECCION -->
+            <div class="personas"style="height: 51rem; padding-top: 8rem;">
+              <div class="row">
+                <h1 id="enemigos">PERSONAJES</h1>
+              </div>
+              <div id="carouselExampleIndicators" class="carousel slide">
+    <div class="carousel-inner carruselch">
+        <div class="carousel-item active ">
+          <div class="card" style="width: 18rem;">
+  <img src="../assets/IMG/pesas.png" class="card-img-top" id="pesas" alt="...">
+  <div class="card-body">
+    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+  </div>
+</div>
         </div>
 
+        <div class="carousel-item">
+          <div class="card" style="width: 18rem;">
+  <img src="../assets/IMG/lilith.png" class="card-img-top" id="lilith" alt="...">
+  <div class="card-body">
+    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+  </div>
+</div>
 
-        <!-- VIDEO
-        <div class="container-fluid contenedor animar" style="margin-top: 15px;">
-            <video id="video" src="{{asset('public/VIDEO/ImHereFinaFinal.mp4')}}" controls loop>
-                Tu navegador no admite el elemento de video.
-                <script src="{{asset('public/JS/video.js')}}"></script>
-            </video>
-
-        </div> -->
-
-
-        <!--*? Sección de Personajes-->
-        <div class="container SecSec  personajes">
-            <div class="container">
-                <br>
-                <div class="col-md-12">
-                    <div class="señal-llamativa">
-                        <h2>Conoce a nuestros personajes:</h2>
-                    </div>
-                </div>
-
-                <!-- CARRUSEL -->
-                    <div id="carouselExampleIndicators" class="carousel slide">
-    <div class="carousel-indicators">
-        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
-        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="3" aria-label="Slide 4"></button>
-    </div>
-    <div class="carousel-inner">
-        <div class="carousel-item active">
-        <img src="../assets/IMG/pesas.png" class="d-block w-100 img-fluid" alt="...">
         </div>
         <div class="carousel-item">
-        <img src="../assets/IMG/lilith.png" class="d-block w-100" alt="...">
-        </div>
-        <div class="carousel-item">
-        <img src="../assets/IMG/flaca.png" class="d-block w-100" alt="...">
-        </div>
-        <div class="carousel-item">
-        <img src="../assets/IMG/f.png" class="d-block w-100" alt="...">
+          <div class="card" style="width: 18rem;">
+  <img src="../assets/IMG/flaca.png" class="card-img-top" id="flaca" alt="...">
+  <div class="card-body">
+    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+  </div>
+</div>
         </div>
     </div>
     <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
@@ -189,29 +176,70 @@ import TheWelcome from '../components/TheWelcome.vue'
         <span class="visually-hidden">Next</span>
     </button>
     </div>
-                    </div>
-                </div>
-        </main>
-
-    <br>
-    <div class="container">
-    <div class="card bg-dark text-white">
-                <div class="row">
-                    <!-- Columna para la imagen -->
-                    <div class="col-md-6">
-                        <img src="../assets/IMG/oso.png" class="img-responsive" alt="Logo">
-                    </div>
-
-                    <!-- Columna para el texto -->
-                    <div class="col-md-6">
-                        <div class="card-body">
-                            <h3 class="card-title">Sé parte de esta <br> espantosa travesía. <br> ¡Descargalo Ya!</h3>
-                        </div>
-                    </div>
-                </div>
             </div>
-        </div>
 
+
+        <!-- QUINTA SECCION -->
+        <div class="gradient new" style="height: 42rem; padding-top: 3rem;align-items: center; ">
+          <div class="row">
+            <h1 id="newprox">PROXIMANTE</h1>
+            <div class="col-md-6">
+              <div class="container">
+                <div class="card" style="max-width: 750px; height: 30rem;margin-left: 45px;">
+  <img src=".." class="card-img-top" alt="...">
+  <div class="card-body">
+    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+  </div>
+</div>
+              </div>
+            </div>
+            <div class="col-md-6 ">
+              <div class="row">
+                <div class="card mb-3" style="max-width: 540px; height: 10rem;margin-left: 100px;">
+  <div class="row g-0">
+    <div class="col-md-4">
+      <img src="..." class="img-fluid rounded-start" alt="...">
+    </div>
+    <div class="col-md-8">
+      <div class="card-body">
+        <h3>Mas Demonios estan a la asecha, ayuda a LILITH a convatirlos</h3>
+      </div>
+    </div>
+  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="card mb-3" style="max-width: 540px; height: 10rem;  margin-left: 100px;">
+  <div class="row g-0">
+    <div class="col-md-4">
+      <img src="..." class="img-fluid rounded-start" alt="...">
+    </div>
+    <div class="col-md-8">
+      <div class="card-body">
+        <p>hola</p>
+      </div>
+    </div>
+  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="card mb-3" style="max-width: 540px; height: 10rem;  margin-left: 100px;">
+  <div class="row g-0">
+    <div class="col-md-4">
+      <img src="..." class="img-fluid rounded-start" alt="...">
+    </div>
+    <div class="col-md-8">
+      <div class="card-body">
+        <p>hola</p>
+      </div>
+    </div>
+  </div>
+  </div>
+              </div>
+            </div>
+          </div>
+          </div>
+        </main>
 </body>
 
 </template>
@@ -219,110 +247,149 @@ import TheWelcome from '../components/TheWelcome.vue'
 <style scoped>
 @import url('../assets/main.css');
 
-/* body{
-  /* font-family:Bonechiller Free; */
+/* fondo completo */
+body{
+    background: url(../assets/IMG/degradado2.jpg);
+    background-size: cover; /* Para que la imagen cubra todo el fondo */
+    background-attachment: fixed;
+}
 
+/* primera seccion */
+.scroll-text{
+  font-size: 16px; /* Tamaño de fuente normal */
+  transition: font-size 0.3s; /* Transición suave para el cambio de tamaño de fuente */
+}
+.container:hover .scroll-text {
+  font-size: 100px; /* Tamaño de fuente más grande cuando el mouse está sobre el contenedor */
+}
 
-  /* Color de la primera seccion */
-.gradient-background{
-    background: linear-gradient(to right, #000000c0, #7d7c7bc6);
-    background: url(../assets/IMG/fondooo.png);
-    background-size: cover;
-    min-height: 500px;
-    position: relative;
-}
-.titulo{
-    font-family:HelpMe;
-    color: black;
-}
-.letter{
-    color: white;
-    font-family:Carnage In The Office;
-    letter-spacing: 2px;
-}
-.parrafo{
-    font-family: Carnage In The Office;
-}
-/* Color de la segunda seccion */
+/* segunda seccion */
 .gradient{
-    background: linear-gradient(to right, #282828, #0e0d0cc6);
-    background-size: cover;
-    min-height: 500px;
+    background-image: url(../assets/IMG/roto.jpg);
+    opacity: 0.60; 
+    min-height: 200px;
     position: relative;
-    font-family:Bonechiller Free;
+    font-family:BLOODY;
     color: white;
+    background-size: cover; /* Para que la imagen cubra todo el fondo */
+    
 }
-.sipno{
+
+#introduccion{
     font-family:Bonechiller Free;
-    font-size: 15px;
+    font-size: 25px;
+    text-align: center;
+    padding-left: 40px;
 }
-/* imagenes de sipnosis */
-    .img-thumbnail{
-        width: 300px;
-    height: 200px;
-    }
-    .right-aligned{
-        margin-left: auto;
-    margin-right: 0;
-    display: block;
-    }
+#titulo{
+  font-family:Bonechiller Free;
+    font-size: 70px;
+    text-align: center;
+    padding-left: 30px;
+}
+#datos{
+  text-align: center;
+    padding-left: 30px;
+}
+
 
     /* TERCERA SECCION */
-    .power{
+
+    /* fondo */
+    .tercerasec{
+    background-image: url(../assets/IMG/aa.jpg);
+    /* opacity: 0.60;  */
+    min-height: 200px;
+    position: relative;
+    font-family:Bonechiller Free;
+    color: white;
+    background-size: cover; /* Para que la imagen cubra todo el fondo */
+    }
+    /* imagen1 */
+    .juego1{
+        margin-top: 10%;
+        width: 500px;
+        height: 200px;
+    }
+    /* titulo de carcateristicas */
+    .Titulo3{
         font-family:Bonechiller Free;
+        font-size: 300%;
     }
     .contexto{
-    display: flex;
-    align-items: center;
-    justify-content: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
-/* Personajes */
-.señal-llamativa{
-    font-family:Bonechiller Free;
-}
-.personajes{
-    background: linear-gradient(to right, #282828, #0e0d0cc6);
-    background-size: cover;
-    min-height: 500px;
+    #tiles{
+      color: black;
+      font-size: 2rem;
+    }
+    #text{
+      text-align: center;
+    }
+    /* CUARTA SECCION */
+
+    .personas{
+      background-image: url(../assets/IMG/personaje.jpeg);
+    /* opacity: 0.60;  */
+    min-height: 200px;
     position: relative;
     font-family:Bonechiller Free;
     color: white;
-}
-/* TERCERA SECCION */
-.powerUp{
-    background: linear-gradient(to right, #545252, #575654c6);
-    background-size: cover;
-    min-height: 500px;
-    position: relative;
-    /* font-family:Bonechiller Free; */
-    color: white;
-}
-.enemigos{
-    background: linear-gradient(to right, #555454, #c9c6c4c6);
-    background-size: cover;
-    min-height: 500px;
-    position: relative;
-    font-family:Bonechiller Free;
-    color: white;
-}
-.contexto{
-    font-family:Bonechiller Free;
-    font-size: 20px;
-    color: black;
-}
-/* JUEGA AHORA */
-.card{
-        margin: auto;
-        margin-bottom: 3%;
-    }
-    /* ENEMIGOS */
-    .enemy{
-        font-family:Bonechiller Free;
-    }
-    .parrfo{
-        color: black;
-        font-family:Bonechiller Free;
-        font-size: 20px;
+    background-size: cover; /* Para que la imagen cubra todo el fondo */
     }
 
+.card{
+  margin-left: 40%;
+  background: none;
+  margin-top: 5%;
+}
+
+.contexto{
+    font-family:Bonechiller Free;
+    color: black;
+}
+
+#pesas{
+  width: 300px; /* Define el ancho deseado */
+  height:380px; /* Define la altura deseada */
+
+}
+#lilith{
+  width: 300px; /* Define el ancho deseado */
+  height:380px; /* Define la altura deseada */
+}
+#flaca{
+  width: 300px; /* Define el ancho deseado */
+  height:380px; /* Define la altura deseada */
+}
+#enemigos{
+  margin-left: 5%;
+}
+
+/* QUINTA SECCION */
+.new{
+  background-image: url(../assets/IMG/door.jpeg);
+    /* opacity: 0.1;  */
+    min-height: 200px;
+    position: relative;
+    font-family:BLOODY;
+    color: white;
+    background-size: cover; /* Para que la imagen cubra todo el fondo */
+    
+}
+.newdata{
+  align-content: center;
+}
+.card-body{
+  background-color: rgba(255, 255, 255, 0.5); /* Establece el color de fondo con transparencia */
+}
+#newprox{
+  margin-left: 40px;
+}
+
 </style>
+
+
+
