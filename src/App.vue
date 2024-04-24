@@ -54,7 +54,7 @@ watch(() => router.currentRoute.value, (to, from) => {
 
 
 onMounted(() => {
-  
+  document.body.style.overflowX = 'hidden';
   if (token.value == null){
     router.push({ name: 'login' })
   }
